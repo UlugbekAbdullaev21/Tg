@@ -230,12 +230,13 @@ async def broadcast_start(call: types.CallbackQuery, state: FSMContext):
     await state.set_state(Broadcast.message)
     await call.message.answer("📨 Xabar matni:")
 
+
 @dp.message(Broadcast.message)
 async def send_broadcast(message: types.Message, state: FSMContext):
     cur.execute("SELECT user_id FROM users")
     users = cur.fetchall()
 
-for (uid,) in users:
+    for (uid,) in users:
         try:
             # TEXT
             if message.text:
@@ -283,11 +284,14 @@ for (uid,) in users:
 
             await asyncio.sleep(0.05)
 
-        except:
+        except Exception:
             pass
 
     await state.clear()
-    await message.answer("✅ Xabar barcha foydalanuvchilarga yuborildi", reply_markup=admin_menu())
+    await message.answer(
+        "✅ Xabar barcha foydalanuvchilarga yuborildi",
+        reply_markup=admin_menu()
+    )
 
 
 # ================== ADMIN: DB YUKLAB OLISH ==================
